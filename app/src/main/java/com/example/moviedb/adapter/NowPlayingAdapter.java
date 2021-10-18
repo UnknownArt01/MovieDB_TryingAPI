@@ -13,13 +13,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.moviedb.Model.Movies;
 import com.example.moviedb.Model.NowPlaying;
 import com.example.moviedb.R;
 import com.example.moviedb.helper.Const;
-import com.example.moviedb.view.MainActivity;
-import com.example.moviedb.view.MovieDetailActivity;
+import com.example.moviedb.view.activities.MovieDetailActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.CardViewViewHolder> {
@@ -28,6 +27,10 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Ca
     private List<NowPlaying.Results> listPlaying;
     private List<NowPlaying.Results> getListPlaying(){
         return listPlaying;
+    }
+    private List<Movies.Genres> genres;
+    private List<Movies.Genres> getGenres(){
+        return genres;
     }
     public NowPlayingAdapter(Context context){
         this.context = context;
@@ -48,6 +51,7 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Ca
     @Override
     public void onBindViewHolder(@NonNull CardViewViewHolder holder, int position) {
         final NowPlaying.Results results = getListPlaying().get(position);
+        final Movies.Genres genres = getGenres().get(position);
         holder.title_card_new_playing.setText(results.getTitle());
         holder.overview_card_now_playing.setText(results.getOverview());
         holder.release_card_now_playing.setText(results.getRelease_date());
@@ -63,6 +67,7 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Ca
                 intent.putExtra("relase_date",results.getRelease_date());
                 intent.putExtra("overview",results.getOverview());
                 intent.putExtra("rating",""+results.getVote_average());
+                intent.putExtra("genre",genres.getName());
 
                 context.startActivity(intent);
             }

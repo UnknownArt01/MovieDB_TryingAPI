@@ -1,4 +1,4 @@
-package com.example.moviedb.view;
+package com.example.moviedb.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +38,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         txt_relase.setText(relase_date);
         txt_overview.setText(overview);
         Glide.with(MovieDetailActivity.this).load(img_path).into(img_details_poster);
+
     }
 
     public void initview(){
