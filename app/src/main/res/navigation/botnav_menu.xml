@@ -8,11 +8,33 @@
     <fragment
         android:id="@+id/nowPlayingFragment"
         android:name="com.example.moviedb.view.fragments.NowPlayingFragment"
-        android:label="fragment_now_playing"
-        tools:layout="@layout/fragment_now_playing" />
+        android:label="@string/now_playing"
+        tools:layout="@layout/fragment_now_playing" >
+        <action
+            android:id="@+id/action_nowPlayingFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/upcomingFragment"
         android:name="com.example.moviedb.view.fragments.UpcomingFragment"
-        android:label="fragment_upcoming"
-        tools:layout="@layout/fragment_upcoming" />
+        android:label="@string/upcoming"
+        tools:layout="@layout/fragment_upcoming" >
+        <action
+            android:id="@+id/action_upcomingFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.example.moviedb.view.fragments.MovieDetail"
+        android:label="Movie Detail"
+        tools:layout="@layout/fragment_movie_detail" />
+    <fragment
+        android:id="@+id/PopularFragment"
+        android:name="com.example.moviedb.view.fragments.PopularFragment"
+        android:label="Popular"
+        tools:layout="@layout/fragment_popular" >
+        <action
+            android:id="@+id/action_PopularFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
 </navigation>

@@ -14,12 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.moviedb.Model.NowPlaying;
-import com.example.moviedb.Model.Upcoming;
+import com.example.moviedb.Model.Popular;
 import com.example.moviedb.R;
-import com.example.moviedb.adapter.NewUpcomingAdapter;
-import com.example.moviedb.adapter.NowPlayingAdapter;
-import com.example.moviedb.adapter.UpcomingAdapter;
+import com.example.moviedb.adapter.NewPopularAdapter;
 import com.example.moviedb.viewmodel.MovieVM;
 
 import java.util.ArrayList;
@@ -27,10 +24,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UpcomingFragment#newInstance} factory method to
+ * Use the {@link PopularFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UpcomingFragment extends Fragment {
+public class PopularFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,7 +38,7 @@ public class UpcomingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public UpcomingFragment() {
+    public PopularFragment() {
         // Required empty public constructor
     }
 
@@ -51,11 +48,11 @@ public class UpcomingFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment UpcomingFragment.
+     * @return A new instance of fragment PopularFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UpcomingFragment newInstance(String param1, String param2) {
-        UpcomingFragment fragment = new UpcomingFragment();
+    public static PopularFragment newInstance(String param1, String param2) {
+        PopularFragment fragment = new PopularFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,14 +68,13 @@ public class UpcomingFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-    private RecyclerView rv_upcoming;
+    private RecyclerView rv_popular;
     private MovieVM viewmodel;
     private int page = 1;
-    public List<Upcoming.Results> upcominglist = new ArrayList<>();//new
+    public List<Popular.Results> popularlist = new ArrayList<>();//new
     private ProgressDialog progressBar;
-    private NewUpcomingAdapter adapter;
     private boolean loading = false;
+    private NewPopularAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,55 +82,56 @@ public class UpcomingFragment extends Fragment {
         // Inflate the layout for this fragment
         progressBar = ProgressDialog.show(getActivity(),"Now Loading", "Loading the data, Please wait....!", true);
 
-        View view = inflater.inflate(R.layout.fragment_upcoming, container, false);
+        View view = inflater.inflate(R.layout.fragment_popular, container, false);
 
-        rv_upcoming = view.findViewById(R.id.rv_upcoming_fragment);
-        viewmodel = new ViewModelProvider(UpcomingFragment.this).get(MovieVM.class);
-        viewmodel.getUpcoming(page);
-        viewmodel.getResultGetUpcoming().observe(getViewLifecycleOwner(), showUpcoming);
-        // dipindah
-        rv_upcoming.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewUpcomingAdapter(getActivity());
-        adapter.setListUpcoming(upcominglist);
-        rv_upcoming.setAdapter(adapter);
+        rv_popular = view.findViewById(R.id.rv_popular);
+        viewmodel = new ViewModelProvider(PopularFragment.this).get(MovieVM.class);
+        viewmodel.getPopular(page);
+        viewmodel.getResultGetPopular().observe(getViewLifecycleOwner(), showPopular);
+
+        //dipindah
+        rv_popular.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new NewPopularAdapter(getActivity());
+        adapter.setListPopular(popularlist);
+        rv_popular.setAdapter(adapter);
         //end
-        //scroll view
-        rv_upcoming.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        //scoll view
+        rv_popular.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager scroll = (LinearLayoutManager) rv_upcoming.getLayoutManager();
+                LinearLayoutManager scroll = (LinearLayoutManager) rv_popular.getLayoutManager();
 
                 if (loading == false){
-                    if (scroll != null && scroll.findLastCompletelyVisibleItemPosition() == upcominglist.size() -1){
+                    if (scroll != null && scroll.findLastCompletelyVisibleItemPosition() == popularlist.size() -1){
                         loading = true;
-                        upcominglist.add(null);
-                        upcominglist.remove(null);
+                        popularlist.add(null);
+                        popularlist.remove(null);
                         page ++;
-                        viewmodel.getUpcoming(page);
-                        viewmodel.getResultGetUpcoming().observe(getViewLifecycleOwner(), showUpcoming);
+                        viewmodel.getPopular(page);
+                        viewmodel.getResultGetPopular().observe(getViewLifecycleOwner(), showPopular);
                         loading = false;
                     }
                 }
             }
         });
-        //end scroll view
+        //end scrollview
 
         return view;
     }
-    private Observer<Upcoming> showUpcoming = new Observer<Upcoming>() {
+    private Observer<Popular> showPopular = new Observer<Popular>() {
         @Override
-        public void onChanged(Upcoming upcoming) {
+        public void onChanged(Popular popular) {
 
             //new
-            upcominglist.addAll(upcoming.getResults());
-            adapter.notifyDataSetChanged();
-            //end of new
 
-            if (upcoming != null){
+            popularlist.addAll(popular.getResults());
+            adapter.notifyDataSetChanged();
+            //end
+
+            if (popularlist != null){
                 progressBar.dismiss();
             }
         }
-
     };
 }

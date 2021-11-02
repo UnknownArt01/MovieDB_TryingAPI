@@ -1,7 +1,7 @@
 package com.example.moviedb.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.moviedb.Model.Movies;
 import com.example.moviedb.Model.NowPlaying;
 import com.example.moviedb.R;
 import com.example.moviedb.helper.Const;
-import com.example.moviedb.view.activities.MovieDetailActivity;
 
 import java.util.List;
 
@@ -27,10 +26,6 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Ca
     private List<NowPlaying.Results> listPlaying;
     private List<NowPlaying.Results> getListPlaying(){
         return listPlaying;
-    }
-    private List<Movies.Genres> genres;
-    private List<Movies.Genres> getGenres(){
-        return genres;
     }
     public NowPlayingAdapter(Context context){
         this.context = context;
@@ -51,7 +46,6 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Ca
     @Override
     public void onBindViewHolder(@NonNull CardViewViewHolder holder, int position) {
         final NowPlaying.Results results = getListPlaying().get(position);
-        final Movies.Genres genres = getGenres().get(position);
         holder.title_card_new_playing.setText(results.getTitle());
         holder.overview_card_now_playing.setText(results.getOverview());
         holder.release_card_now_playing.setText(results.getRelease_date());
@@ -60,16 +54,9 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.Ca
         holder.card_nowplaying.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MovieDetailActivity.class);
-                intent.putExtra("movie_id", ""+results.getId());
-                intent.putExtra("title",results.getTitle());
-                intent.putExtra("poster",results.getPoster_path());
-                intent.putExtra("relase_date",results.getRelease_date());
-                intent.putExtra("overview",results.getOverview());
-                intent.putExtra("rating",""+results.getVote_average());
-                intent.putExtra("genre",genres.getName());
-
-                context.startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString("movie_id", ""+results.getId());
+                Navigation.findNavController(view).navigate(R.id.action_nowPlayingFragment_to_movieDetailFragment, bundle);
             }
         });
     }

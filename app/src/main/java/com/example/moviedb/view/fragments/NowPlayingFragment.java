@@ -1,14 +1,27 @@
 package com.example.moviedb.view.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.moviedb.Model.NowPlaying;
 import com.example.moviedb.R;
+import com.example.moviedb.adapter.NewNowPlayingAdapter;
+import com.example.moviedb.adapter.NowPlayingAdapter;
+import com.example.moviedb.viewmodel.MovieVM;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +70,67 @@ public class NowPlayingFragment extends Fragment {
         }
     }
 
+    private RecyclerView rv_nowplaying;
+    private MovieVM viewmodel;
+    private int page = 1;
+    public List<NowPlaying.Results> nowplayinglist = new ArrayList<>();//new
+    private ProgressDialog progressBar;
+    private boolean loading = false;
+    private NewNowPlayingAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_now_playing, container, false);
+        progressBar = ProgressDialog.show(getActivity(),"Now Loading", "Loading the data, Please wait....!", true);
+
+        View view = inflater.inflate(R.layout.fragment_now_playing, container, false);
+
+        rv_nowplaying = view.findViewById(R.id.rv_nowplaying_fragment);
+        viewmodel = new ViewModelProvider(NowPlayingFragment.this).get(MovieVM.class);
+        viewmodel.getNowPlaying(page);
+        viewmodel.getResultGetNowPlaying().observe(getViewLifecycleOwner(), showNowPlaying);
+        //dipindah biar gak buat adapter baru
+        rv_nowplaying.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new NewNowPlayingAdapter(getActivity());
+        adapter.setListPlaying(nowplayinglist);
+        rv_nowplaying.setAdapter(adapter);
+        //end
+        //scoll view
+        rv_nowplaying.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager scroll = (LinearLayoutManager) rv_nowplaying.getLayoutManager();
+                if (loading == false){
+                    if (scroll != null && scroll.findLastCompletelyVisibleItemPosition() == nowplayinglist.size() -1){
+                        loading = true;
+                        nowplayinglist.add(null);
+                        nowplayinglist.remove(null);
+                        page ++;
+                        viewmodel.getNowPlaying(page);
+                        viewmodel.getResultGetNowPlaying().observe(getViewLifecycleOwner(), showNowPlaying);
+                        loading = false;
+                    }
+                }
+            }
+        });
+        //end scrollview
+        return view;
+
     }
+    private Observer<NowPlaying> showNowPlaying = new Observer<NowPlaying>() {
+        @Override
+        public void onChanged(NowPlaying nowPlaying) {
+            //new
+            nowplayinglist.addAll(nowPlaying.getResults());
+            adapter.notifyDataSetChanged();
+            //end
+
+            if (nowplayinglist != null){
+                progressBar.dismiss();
+            }
+        }
+    };
+
 }

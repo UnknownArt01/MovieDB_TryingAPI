@@ -5,8 +5,7 @@
     android:id="@+id/cons_movieDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".view.activities.MovieDetailActivity">
+    android:background="@color/black">
 
     <ScrollView
         android:id="@+id/movieDetails_sv"
@@ -14,8 +13,10 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="SpeakableTextPresentCheck">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,21 +25,22 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/img_backdrop"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:id="@+id/imageView_backdrop"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:alpha="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             <ImageView
                 android:id="@+id/img_details_poster"
                 android:layout_width="150dp"
                 android:layout_height="200dp"
-                android:layout_marginTop="108dp"
+                android:layout_marginTop="102dp"
                 android:contentDescription="@string/img"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.252"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
@@ -47,11 +49,12 @@
                 android:id="@+id/txt_relase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
                 android:text="@string/subtitle"
-                android:textColor="#A1A1A1"
-                app:layout_constraintEnd_toEndOf="@+id/img_details_poster"
-                app:layout_constraintHorizontal_bias="0.528"
+                android:textColor="#D6D6D6"
+                app:layout_constraintEnd_toStartOf="@+id/txt_popularity"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/img_details_poster"
                 app:layout_constraintTop_toBottomOf="@+id/img_details_poster" />
 
@@ -59,7 +62,6 @@
                 android:id="@+id/txt_details_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="4,5"
                 android:textColor="#686867"
                 android:textSize="20dp"
@@ -72,11 +74,10 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="/ 10"
                 android:textColor="#686867"
                 android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/txt_relase"
+                app:layout_constraintEnd_toStartOf="@+id/tvt_avg_vote"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/txt_details_rating"
                 app:layout_constraintTop_toTopOf="@+id/txt_details_rating" />
@@ -85,12 +86,12 @@
                 android:id="@+id/img_star"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="64dp"
                 android:contentDescription="@string/img"
                 app:layout_constraintEnd_toStartOf="@+id/txt_details_rating"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/txt_relase"
-                app:layout_constraintTop_toBottomOf="@+id/txt_relase"
+                app:layout_constraintStart_toStartOf="@+id/img_details_poster"
+                app:layout_constraintTop_toBottomOf="@+id/img_details_poster"
                 app:srcCompat="@android:drawable/btn_star_big_on" />
 
             <TextView
@@ -116,18 +117,86 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="64dp"
                 android:background="@drawable/corner"
                 android:padding="10dp"
                 android:text="@string/subtitle"
                 android:textAlignment="center"
                 android:textColor="#FFC107"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chip_genres" />
+
+            <TextView
+                android:id="@+id/txt_tagline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.8"
+                android:text="TextView"
+                android:textColor="@color/gold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_details_title" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_genres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_tagline">
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <HorizontalScrollView
+                android:id="@+id/hsv_companies"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="64dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_overview"
+                tools:ignore="SpeakableTextPresentCheck">
+
+                <LinearLayout
+                    android:id="@+id/llhsv_companies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/tvt_avg_vote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="TextView"
+                android:textColor="@color/gold"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="@+id/img_details_poster"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView6"
+                app:layout_constraintTop_toTopOf="@+id/txt_details_rating" />
+
+            <TextView
+                android:id="@+id/txt_popularity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="TextView"
+                android:textColor="@color/gold"
+                app:layout_constraintEnd_toEndOf="@+id/img_details_poster"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/txt_relase"
+                app:layout_constraintTop_toTopOf="@+id/txt_relase" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,8 @@ package com.example.moviedb.retrofit;
 
 import com.example.moviedb.Model.Movies;
 import com.example.moviedb.Model.NowPlaying;
+import com.example.moviedb.Model.Popular;
+import com.example.moviedb.Model.Upcoming;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,7 +20,18 @@ public interface ApiEndPoint {
 
     @GET("movie/now_playing")
     Call<NowPlaying> getNowPlaying(
-            @Query("api_key") String apikey
+            @Query("api_key") String apikey,
+            @Query("page") int page
     );
 
+    @GET("movie/upcoming")
+    Call<Upcoming> getUpcoming(
+            @Query("api_key") String apikey,
+            @Query("page") int page
+    );
+    @GET("movie/popular")
+    Call<Popular> getPopular(
+            @Query("api_key") String apikey,
+            @Query("page") int page
+    );
 }
